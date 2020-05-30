@@ -1,12 +1,12 @@
 package com.gerald.basicswipe;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.nfc.Tag;
+import java.util.Random;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
@@ -15,11 +15,20 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private static int min_distance = 150;
     private GestureDetector GesDec;
 
+    Random random = new Random();
+    private ImageView imVi;
+
+    int[]sampleImages ={R.drawable.img_1, R.drawable.img_2, R.drawable.img_3, R.drawable.img_4, R.drawable.img_5};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        imVi = findViewById(R.id.imageView);
+        setImageRandom(sampleImages.length);
+
+        //Gesture Detector
         this.GesDec = new GestureDetector(MainActivity.this, this);
     }
 
@@ -43,24 +52,32 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                     if(x2 > x1){
                         Toast.makeText(MainActivity.this, "swiped to right", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "right swipe.");
+                        setImageRandom(sampleImages.length);
                     }else {
                         Toast.makeText(MainActivity.this, "swiped to left", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Left swipe.");
+                        setImageRandom(sampleImages.length);
                     }
                 }else if(Math.abs(valY) > min_distance) {
                     if(y2 > y1){
                         Toast.makeText(MainActivity.this, "swiped to bottom", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "bottom swipe.");
+                        setImageRandom(sampleImages.length);
                     }else {
                         Toast.makeText(MainActivity.this, "swiped to top", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "top swipe.");
+                        setImageRandom(sampleImages.length);
                     }
                 }
                 break;
         }
         return super.onTouchEvent(e);
     }
-
+    private void setImageRandom(int length) {
+        int i = random.nextInt(length);
+        Log.d(TAG, "index : " + i);
+        imVi.setImageResource(sampleImages[i]);
+    }
     @Override
     public boolean onDown(MotionEvent motionEvent) {
 //        Toast.makeText(MainActivity.this, "Swiped", Toast.LENGTH_SHORT).show();
